@@ -185,202 +185,46 @@
   </footer>
 
   <script>
-    const movieList = [
-      {
-        id: 1,
-        title: "Iron Man",
-        year: 2008,
-        phase: 1,
-        poster:
-          "https://image.tmdb.org/t/p/w500/78lPtwv72eTNqFW9COBYI0dWDJa.jpg"
-      },
-      {
-        id: 2,
-        title: "The Incredible Hulk",
-        year: 2008,
-        phase: 1,
-        poster:
-          "https://image.tmdb.org/t/p/w500/gKzYx79y0AQTL4UAk1cBQJ3nvrm.jpg"
-      },
-      {
-        id: 3,
-        title: "Iron Man 2",
-        year: 2010,
-        phase: 1,
-        poster:
-          "https://image.tmdb.org/t/p/w500/6WBeq4fCfn7AN0o21W9qNcRF2l9.jpg"
-      },
-      {
-        id: 4,
-        title: "Thor",
-        year: 2011,
-        phase: 1,
-        poster:
-          "https://image.tmdb.org/t/p/w500/prSfAi1xGrhLQNxVSUFh61xQ4Qy.jpg"
-      },
-      {
-        id: 5,
-        title: "The Avengers",
-        year: 2012,
-        phase: 1,
-        poster:
-          "https://image.tmdb.org/t/p/w500/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg"
-      },
-      {
-        id: 6,
-        title: "Guardians of the Galaxy",
-        year: 2014,
-        phase: 2,
-        poster:
-          "https://image.tmdb.org/t/p/w500/r7vmZjiyZw9rpJMQJdXpjgiCOk9.jpg"
-      },
-      {
-        id: 7,
-        title: "Avengers: Age of Ultron",
-        year: 2015,
-        phase: 2,
-        poster:
-          "https://image.tmdb.org/t/p/w500/4ssDuvEDkSArWEdyBl2X5EHvYKU.jpg"
-      },
-      {
-        id: 8,
-        title: "Captain America: Civil War",
-        year: 2016,
-        phase: 3,
-        poster:
-          "https://image.tmdb.org/t/p/w500/rAGiXaUfPzY7CDEyNKUofk3Kw2e.jpg"
-      },
-      {
-        id: 9,
-        title: "Black Panther",
-        year: 2018,
-        phase: 3,
-        poster:
-          "https://image.tmdb.org/t/p/w500/uxzzxijgPIY7slzFvMotPv8wjKA.jpg"
-      },
-      {
-        id: 10,
-        title: "Avengers: Endgame",
-        year: 2019,
-        phase: 3,
-        poster:
-          "https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg"
-      }
-    ];
+const movieList = [
+  {id:1,title:"Iron Man",year:2008,phase:1},
+  {id:2,title:"The Incredible Hulk",year:2008,phase:1},
+  {id:3,title:"Iron Man 2",year:2010,phase:1},
+  {id:4,title:"Thor",year:2011,phase:1},
+  {id:5,title:"Captain America: The First Avenger",year:2011,phase:1},
+  {id:6,title:"The Avengers",year:2012,phase:1},
 
-    let watched = new Set();
+  {id:7,title:"Iron Man 3",year:2013,phase:2},
+  {id:8,title:"Thor: The Dark World",year:2013,phase:2},
+  {id:9,title:"Captain America: The Winter Soldier",year:2014,phase:2},
+  {id:10,title:"Guardians of the Galaxy",year:2014,phase:2},
+  {id:11,title:"Avengers: Age of Ultron",year:2015,phase:2},
+  {id:12,title:"Ant-Man",year:2015,phase:2},
 
-    try {
-      watched = new Set(
-        JSON.parse(
-          localStorage.getItem("marvel-watched") || "[]"
-        )
-      );
-    } catch {
-      watched = new Set();
-    }
+  {id:13,title:"Captain America: Civil War",year:2016,phase:3},
+  {id:14,title:"Doctor Strange",year:2016,phase:3},
+  {id:15,title:"Guardians of the Galaxy Vol. 2",year:2017,phase:3},
+  {id:16,title:"Spider-Man: Homecoming",year:2017,phase:3},
+  {id:17,title:"Thor: Ragnarok",year:2017,phase:3},
+  {id:18,title:"Black Panther",year:2018,phase:3},
+  {id:19,title:"Avengers: Infinity War",year:2018,phase:3},
+  {id:20,title:"Ant-Man and the Wasp",year:2018,phase:3},
+  {id:21,title:"Captain Marvel",year:2019,phase:3},
+  {id:22,title:"Avengers: Endgame",year:2019,phase:3},
+  {id:23,title:"Spider-Man: Far From Home",year:2019,phase:3},
 
-    const movies = document.getElementById("movies");
-    const search = document.getElementById("search");
-    const phase = document.getElementById("phase");
-    const status = document.getElementById("status");
-    const stats = document.getElementById("stats");
+  {id:24,title:"Black Widow",year:2021,phase:4},
+  {id:25,title:"Shang-Chi and the Legend of the Ten Rings",year:2021,phase:4},
+  {id:26,title:"Eternals",year:2021,phase:4},
+  {id:27,title:"Spider-Man: No Way Home",year:2021,phase:4},
+  {id:28,title:"Doctor Strange in the Multiverse of Madness",year:2022,phase:4},
+  {id:29,title:"Thor: Love and Thunder",year:2022,phase:4},
+  {id:30,title:"Black Panther: Wakanda Forever",year:2022,phase:4},
 
-    function renderMovies() {
-      const query = search.value.trim().toLowerCase();
-
-      const filtered = movieList.filter(movie => {
-        const matchesSearch =
-          movie.title.toLowerCase().includes(query) ||
-          String(movie.year).includes(query);
-
-        const matchesPhase =
-          phase.value === "all" ||
-          String(movie.phase) === phase.value;
-
-        const matchesStatus =
-          status.value === "all" ||
-          (status.value === "watched" &&
-            watched.has(movie.id)) ||
-          (status.value === "unwatched" &&
-            !watched.has(movie.id));
-
-        return matchesSearch &&
-          matchesPhase &&
-          matchesStatus;
-      });
-
-      stats.textContent =
-        `شاهدت ${watched.size} من ${movieList.length} أفلام`;
-
-      movies.innerHTML = "";
-
-      if (filtered.length === 0) {
-        movies.innerHTML =
-          '<p class="empty">مفيش أفلام مطابقة للبحث.</p>';
-        return;
-      }
-
-      filtered.forEach(movie => {
-        const isWatched = watched.has(movie.id);
-        const card = document.createElement("article");
-
-        card.className =
-          "movie" + (isWatched ? " watched" : "");
-
-        const poster = document.createElement("img");
-        poster.className = "poster";
-        poster.src = movie.poster;
-        poster.alt = movie.title;
-        poster.loading = "lazy";
-
-        poster.onerror = () => {
-          poster.removeAttribute("src");
-          poster.alt = "الصورة غير متاحة";
-        };
-
-        const info = document.createElement("div");
-        info.className = "movie-info";
-
-        const title = document.createElement("h2");
-        title.textContent = movie.title;
-
-        const details = document.createElement("div");
-        details.className = "details";
-        details.textContent =
-          `${movie.year} · المرحلة ${movie.phase}`;
-
-        const button = document.createElement("button");
-        button.textContent = isWatched
-          ? "✓ شاهدت الفيلم"
-          : "تحديد كمُشاهَد";
-
-        button.addEventListener("click", () => {
-          if (watched.has(movie.id)) {
-            watched.delete(movie.id);
-          } else {
-            watched.add(movie.id);
-          }
-
-          localStorage.setItem(
-            "marvel-watched",
-            JSON.stringify([...watched])
-          );
-
-          renderMovies();
-        });
-
-        info.append(title, details, button);
-        card.append(poster, info);
-        movies.append(card);
-      });
-    }
-
-    search.addEventListener("input", renderMovies);
-    phase.addEventListener("change", renderMovies);
-    status.addEventListener("change", renderMovies);
-
-    renderMovies();
-  </script>
-</body>
-</html>
+  {id:31,title:"Ant-Man and the Wasp: Quantumania",year:2023,phase:5},
+  {id:32,title:"Guardians of the Galaxy Vol. 3",year:2023,phase:5},
+  {id:33,title:"The Marvels",year:2023,phase:5},
+  {id:34,title:"Deadpool & Wolverine",year:2024,phase:5},
+  {id:35,title:"Captain America: Brave New World",year:2025,phase:5},
+  {id:36,title:"Thunderbolts*",year:2025,phase:5},
+  {id:37,title:"The Fantastic Four: First Steps",year:2025,phase:6}
+];
