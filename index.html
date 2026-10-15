@@ -1,230 +1,287 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Marvel Movie Tracker</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MARVEL UNIVERSE</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      background: #101014;
-      color: white;
-      font-family: Arial, sans-serif;
-    }
-
-    header {
-      padding: 35px 20px;
-      text-align: center;
-      background: linear-gradient(135deg, #4b0710, #17171d);
-      border-bottom: 2px solid #e62429;
-    }
-
-    header h1 {
-      margin: 0 0 12px;
-      font-size: 32px;
-    }
-
-    header p {
-      color: #d0d0d0;
-      margin: 0;
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 24px 16px;
-    }
-
-    .stats {
-      margin-bottom: 20px;
-      color: #ddd;
-      font-size: 15px;
-    }
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 25px;
-    }
-
-    input, select {
-      flex: 1;
-      min-width: 180px;
-      padding: 13px;
-      border: 1px solid #38383f;
-      border-radius: 8px;
-      background: #202026;
-      color: white;
-      font-size: 15px;
-    }
-
-    .movies {
-      display: grid;
-      grid-template-columns: repeat(
-        auto-fit, minmax(175px, 1fr)
-      );
-      gap: 20px;
-    }
-
-    .movie {
-      overflow: hidden;
-      background: #1c1c23;
-      border: 1px solid #303039;
-      border-radius: 12px;
-      transition: transform 0.2s;
-    }
-
-    .movie:hover {
-      transform: translateY(-5px);
-    }
-
-    .poster {
-      width: 100%;
-      aspect-ratio: 2 / 3;
-      object-fit: cover;
-      display: block;
-      background: #303039;
-    }
-
-    .movie-info {
-      padding: 14px;
-    }
-
-    .movie h2 {
-      font-size: 17px;
-      margin: 0 0 10px;
-    }
-
-    .details {
-      color: #bcbcc5;
-      font-size: 13px;
-      margin-bottom: 14px;
-    }
-
-    button {
-      width: 100%;
-      padding: 11px;
-      border: none;
-      border-radius: 7px;
-      background: #e62429;
-      color: white;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    button:hover {
-      background: #bd171c;
-    }
-
-    .movie.watched {
-      border-color: #35bd83;
-    }
-
-    .movie.watched button {
-      background: #197c55;
-    }
-
-    .empty {
-      text-align: center;
-      color: #bbb;
-      padding: 40px 0;
-      grid-column: 1 / -1;
-    }
-
-    footer {
-      padding: 25px;
-      text-align: center;
-      color: #888;
-      font-size: 13px;
-    }
-  </style>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#0b0b10;
+  color:#fff;
+  font-family:Arial,sans-serif
+}
+header{
+  padding:35px 15px;
+  text-align:center;
+  background:linear-gradient(140deg,#700810,#17171e 75%);
+  border-bottom:3px solid #e62429
+}
+.logo{
+  color:#fff;
+  font-size:clamp(27px,5vw,43px);
+  font-weight:900;
+  letter-spacing:2px;
+  margin:0
+}
+.logo span{color:#ff343a}
+header p{color:#ccc;margin-bottom:0}
+.container{max-width:1200px;margin:auto;padding:24px 16px}
+.stats{
+  display:flex;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;margin-bottom:20px;
+  color:#ddd
+}
+.controls{
+  display:flex;gap:10px;flex-wrap:wrap;
+  margin-bottom:25px
+}
+input,select{
+  flex:1;min-width:160px;
+  padding:13px;border-radius:8px;
+  background:#1c1c24;color:white;
+  border:1px solid #383842;font-size:15px
+}
+h2.section-title{
+  font-size:22px;margin-bottom:20px
+}
+.movies{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(165px,1fr));
+  gap:18px
+}
+.card{
+  overflow:hidden;border-radius:12px;
+  background:#191920;border:1px solid #303039;
+  transition:.2s
+}
+.card:hover{transform:translateY(-5px);border-color:#e62429}
+.poster{
+  width:100%;aspect-ratio:2/3;
+  object-fit:cover;display:block;background:#292930
+}
+.info{padding:13px}
+.title{font-size:15px;line-height:1.5;min-height:45px;margin:0 0 8px}
+.meta{font-size:12px;color:#aaa;margin-bottom:13px}
+button{
+  width:100%;padding:10px;border:0;
+  border-radius:7px;background:#e62429;
+  color:white;font-weight:bold;cursor:pointer
+}
+button:hover{background:#b9141b}
+.card.watched{border-color:#29b879}
+.card.watched button{background:#197b52}
+.empty{grid-column:1/-1;text-align:center;padding:40px;color:#bbb}
+footer{text-align:center;color:#777;padding:25px;font-size:13px}
+@media(max-width:450px){
+ .movies{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .info{padding:10px}
+ .title{font-size:14px}
+}
+</style>
 </head>
 
 <body>
-  <header>
-    <h1>MARVEL MOVIE TRACKER</h1>
-    <p>اكتشف الأفلام ورتّب رحلة مشاهدتك لعالم مارفل</p>
-  </header>
+<header>
+  <h1 class="logo">MARVEL <span>UNIVERSE</span></h1>
+  <p>رحلتك الكاملة داخل عالم مارفل السينمائي</p>
+</header>
 
-  <main class="container">
-    <div class="stats" id="stats"></div>
+<main class="container">
+  <div class="stats">
+    <span id="total">عدد الأفلام: 0</span>
+    <span id="progress">شاهدت: 0</span>
+  </div>
 
-    <div class="controls">
-      <input
-        id="search"
-        type="search"
-        placeholder="ابحث عن فيلم..."
-        aria-label="البحث عن فيلم"
-      >
+  <div class="controls">
+    <input id="search" type="search" placeholder="ابحث عن فيلم...">
+    <select id="phase">
+      <option value="all">كل المراحل</option>
+      <option value="1">المرحلة الأولى</option>
+      <option value="2">المرحلة الثانية</option>
+      <option value="3">المرحلة الثالثة</option>
+      <option value="4">المرحلة الرابعة</option>
+      <option value="5">المرحلة الخامسة</option>
+      <option value="6">المرحلة السادسة</option>
+    </select>
+    <select id="status">
+      <option value="all">كل الأفلام</option>
+      <option value="unwatched">لم أشاهدها</option>
+      <option value="watched">شاهدتها</option>
+    </select>
+    <select id="sort">
+      <option value="old">الأقدم أولًا</option>
+      <option value="new">الأحدث أولًا</option>
+      <option value="az">الاسم أبجديًا</option>
+    </select>
+  </div>
 
-      <select id="phase" aria-label="تصفية حسب المرحلة">
-        <option value="all">كل المراحل</option>
-        <option value="1">المرحلة الأولى</option>
-        <option value="2">المرحلة الثانية</option>
-        <option value="3">المرحلة الثالثة</option>
-      </select>
+  <h2 class="section-title">🎬 أفلام عالم مارفل السينمائي</h2>
+  <section class="movies" id="movies"></section>
+</main>
 
-      <select id="status" aria-label="حالة المشاهدة">
-        <option value="all">كل الأفلام</option>
-        <option value="unwatched">لم أشاهدها</option>
-        <option value="watched">شاهدتها</option>
-      </select>
-    </div>
+<footer>
+  MARVEL UNIVERSE · مشروع لمحبي السينما
+</footer>
 
-    <section class="movies" id="movies"></section>
-  </main>
-
-  <footer>
-    مشروع تجريبي من صنعك لمحبي الأفلام 🎬
-  </footer>
-
-  <script>
+<script>
 const movieList = [
-  {id:1,title:"Iron Man",year:2008,phase:1},
-  {id:2,title:"The Incredible Hulk",year:2008,phase:1},
-  {id:3,title:"Iron Man 2",year:2010,phase:1},
-  {id:4,title:"Thor",year:2011,phase:1},
-  {id:5,title:"Captain America: The First Avenger",year:2011,phase:1},
-  {id:6,title:"The Avengers",year:2012,phase:1},
-
-  {id:7,title:"Iron Man 3",year:2013,phase:2},
-  {id:8,title:"Thor: The Dark World",year:2013,phase:2},
-  {id:9,title:"Captain America: The Winter Soldier",year:2014,phase:2},
-  {id:10,title:"Guardians of the Galaxy",year:2014,phase:2},
-  {id:11,title:"Avengers: Age of Ultron",year:2015,phase:2},
-  {id:12,title:"Ant-Man",year:2015,phase:2},
-
-  {id:13,title:"Captain America: Civil War",year:2016,phase:3},
-  {id:14,title:"Doctor Strange",year:2016,phase:3},
-  {id:15,title:"Guardians of the Galaxy Vol. 2",year:2017,phase:3},
-  {id:16,title:"Spider-Man: Homecoming",year:2017,phase:3},
-  {id:17,title:"Thor: Ragnarok",year:2017,phase:3},
-  {id:18,title:"Black Panther",year:2018,phase:3},
-  {id:19,title:"Avengers: Infinity War",year:2018,phase:3},
-  {id:20,title:"Ant-Man and the Wasp",year:2018,phase:3},
-  {id:21,title:"Captain Marvel",year:2019,phase:3},
-  {id:22,title:"Avengers: Endgame",year:2019,phase:3},
-  {id:23,title:"Spider-Man: Far From Home",year:2019,phase:3},
-
-  {id:24,title:"Black Widow",year:2021,phase:4},
-  {id:25,title:"Shang-Chi and the Legend of the Ten Rings",year:2021,phase:4},
-  {id:26,title:"Eternals",year:2021,phase:4},
-  {id:27,title:"Spider-Man: No Way Home",year:2021,phase:4},
-  {id:28,title:"Doctor Strange in the Multiverse of Madness",year:2022,phase:4},
-  {id:29,title:"Thor: Love and Thunder",year:2022,phase:4},
-  {id:30,title:"Black Panther: Wakanda Forever",year:2022,phase:4},
-
-  {id:31,title:"Ant-Man and the Wasp: Quantumania",year:2023,phase:5},
-  {id:32,title:"Guardians of the Galaxy Vol. 3",year:2023,phase:5},
-  {id:33,title:"The Marvels",year:2023,phase:5},
-  {id:34,title:"Deadpool & Wolverine",year:2024,phase:5},
-  {id:35,title:"Captain America: Brave New World",year:2025,phase:5},
-  {id:36,title:"Thunderbolts*",year:2025,phase:5},
-  {id:37,title:"The Fantastic Four: First Steps",year:2025,phase:6}
+{id:1,title:"Iron Man",year:2008,phase:1,poster:"https://image.tmdb.org/t/p/w500/78lPtwv72eTNqFW9COBYI0dWDJa.jpg"},
+{id:2,title:"The Incredible Hulk",year:2008,phase:1,poster:"https://image.tmdb.org/t/p/w500/gKzYx79y0AQTL4UAk1cBQJ3nvrm.jpg"},
+{id:3,title:"Iron Man 2",year:2010,phase:1,poster:"https://image.tmdb.org/t/p/w500/6WBeq4fCfn7AN0o21W9qNcRF2l9.jpg"},
+{id:4,title:"Thor",year:2011,phase:1,poster:"https://image.tmdb.org/t/p/w500/prSfAi1xGrhLQNxVSUFh61xQ4Qy.jpg"},
+{id:5,title:"Captain America: The First Avenger",year:2011,phase:1},
+{id:6,title:"The Avengers",year:2012,phase:1,poster:"https://image.tmdb.org/t/p/w500/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg"},
+{id:7,title:"Iron Man 3",year:2013,phase:2},
+{id:8,title:"Thor: The Dark World",year:2013,phase:2},
+{id:9,title:"Captain America: The Winter Soldier",year:2014,phase:2},
+{id:10,title:"Guardians of the Galaxy",year:2014,phase:2,poster:"https://image.tmdb.org/t/p/w500/r7vmZjiyZw9rpJMQJdXpjgiCOk9.jpg"},
+{id:11,title:"Avengers: Age of Ultron",year:2015,phase:2},
+{id:12,title:"Ant-Man",year:2015,phase:2},
+{id:13,title:"Captain America: Civil War",year:2016,phase:3,poster:"https://image.tmdb.org/t/p/w500/rAGiXaUfPzY7CDEyNKUofk3Kw2e.jpg"},
+{id:14,title:"Doctor Strange",year:2016,phase:3,poster:"https://image.tmdb.org/t/p/w500/uGBVj3bEbCoZbDjjl9wTxcygko1.jpg"},
+{id:15,title:"Guardians of the Galaxy Vol. 2",year:2017,phase:3},
+{id:16,title:"Spider-Man: Homecoming",year:2017,phase:3},
+{id:17,title:"Thor: Ragnarok",year:2017,phase:3},
+{id:18,title:"Black Panther",year:2018,phase:3},
+{id:19,title:"Avengers: Infinity War",year:2018,phase:3},
+{id:20,title:"Ant-Man and the Wasp",year:2018,phase:3},
+{id:21,title:"Captain Marvel",year:2019,phase:3},
+{id:22,title:"Avengers: Endgame",year:2019,phase:3,poster:"https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg"},
+{id:23,title:"Spider-Man: Far From Home",year:2019,phase:3},
+{id:24,title:"Black Widow",year:2021,phase:4},
+{id:25,title:"Shang-Chi and the Legend of the Ten Rings",year:2021,phase:4},
+{id:26,title:"Eternals",year:2021,phase:4},
+{id:27,title:"Spider-Man: No Way Home",year:2021,phase:4},
+{id:28,title:"Doctor Strange in the Multiverse of Madness",year:2022,phase:4},
+{id:29,title:"Thor: Love and Thunder",year:2022,phase:4},
+{id:30,title:"Black Panther: Wakanda Forever",year:2022,phase:4},
+{id:31,title:"Ant-Man and the Wasp: Quantumania",year:2023,phase:5},
+{id:32,title:"Guardians of the Galaxy Vol. 3",year:2023,phase:5},
+{id:33,title:"The Marvels",year:2023,phase:5},
+{id:34,title:"Deadpool & Wolverine",year:2024,phase:5},
+{id:35,title:"Captain America: Brave New World",year:2025,phase:5},
+{id:36,title:"Thunderbolts*",year:2025,phase:5},
+{id:37,title:"The Fantastic Four: First Steps",year:2025,phase:6}
 ];
+
+const movies = document.getElementById("movies");
+const search = document.getElementById("search");
+const phase = document.getElementById("phase");
+const status = document.getElementById("status");
+const sort = document.getElementById("sort");
+
+let watched = new Set();
+
+try {
+  watched = new Set(JSON.parse(
+    localStorage.getItem("marvel-watched") || "[]"
+  ));
+} catch(e) {
+  watched = new Set();
+}
+
+function renderMovies() {
+  const query = search.value.trim().toLowerCase();
+
+  let list = movieList.filter(movie => {
+    const matchSearch =
+      movie.title.toLowerCase().includes(query) ||
+      String(movie.year).includes(query);
+
+    const matchPhase =
+      phase.value === "all" ||
+      String(movie.phase) === phase.value;
+
+    const matchStatus =
+      status.value === "all" ||
+      (status.value === "watched" && watched.has(movie.id)) ||
+      (status.value === "unwatched" && !watched.has(movie.id));
+
+    return matchSearch && matchPhase && matchStatus;
+  });
+
+  if(sort.value === "new") list.sort((a,b) => b.year-a.year);
+  if(sort.value === "old") list.sort((a,b) => a.year-b.year);
+  if(sort.value === "az") list.sort((a,b) => a.title.localeCompare(b.title));
+
+  document.getElementById("total").textContent =
+    "عدد الأفلام: " + movieList.length;
+
+  document.getElementById("progress").textContent =
+    "شاهدت: " + watched.size + " / " + movieList.length;
+
+  movies.innerHTML = "";
+
+  if(list.length === 0) {
+    movies.innerHTML = '<p class="empty">مفيش أفلام مطابقة لبحثك.</p>';
+    return;
+  }
+
+  list.forEach(movie => {
+    const card = document.createElement("article");
+    card.className = "card" + (watched.has(movie.id) ? " watched" : "");
+
+    const poster = document.createElement("img");
+    poster.className = "poster";
+    poster.loading = "lazy";
+    poster.alt = movie.title;
+    poster.src = movie.poster ||
+      "https://placehold.co/500x750/202020/ffffff?text=" +
+      encodeURIComponent(movie.title);
+
+    poster.onerror = () => {
+      poster.onerror = null;
+      poster.src = "https://placehold.co/500x750/202020/ffffff?text=Marvel";
+    };
+
+    const info = document.createElement("div");
+    info.className = "info";
+
+    const title = document.createElement("h3");
+    title.className = "title";
+    title.textContent = movie.title;
+
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    meta.textContent = movie.year + " · المرحلة " + movie.phase;
+
+    const button = document.createElement("button");
+    button.textContent = watched.has(movie.id)
+      ? "✓ شاهدت الفيلم"
+      : "تحديد كمُشاهَد";
+
+    button.onclick = () => {
+      if(watched.has(movie.id)) {
+        watched.delete(movie.id);
+      } else {
+        watched.add(movie.id);
+      }
+
+      try {
+        localStorage.setItem(
+          "marvel-watched",
+          JSON.stringify([...watched])
+        );
+      } catch(e) {}
+
+      renderMovies();
+    };
+
+    info.append(title, meta, button);
+    card.append(poster, info);
+    movies.append(card);
+  });
+}
+
+search.addEventListener("input", renderMovies);
+phase.addEventListener("change", renderMovies);
+status.addEventListener("change", renderMovies);
+sort.addEventListener("change", renderMovies);
+
+renderMovies();
+</script>
+</body>
+</html>
