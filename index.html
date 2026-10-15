@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marvel Movie Tracker</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #101014;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      padding: 35px 20px;
+      text-align: center;
+      background: linear-gradient(135deg, #4b0710, #17171d);
+      border-bottom: 2px solid #e62429;
+    }
+
+    header h1 {
+      margin: 0 0 12px;
+      font-size: 32px;
+    }
+
+    header p {
+      color: #d0d0d0;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 24px 16px;
+    }
+
+    .stats {
+      margin-bottom: 20px;
+      color: #ddd;
+      font-size: 15px;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    input, select {
+      flex: 1;
+      min-width: 180px;
+      padding: 13px;
+      border: 1px solid #38383f;
+      border-radius: 8px;
+      background: #202026;
+      color: white;
+      font-size: 15px;
+    }
+
+    .movies {
+      display: grid;
+      grid-template-columns: repeat(
+        auto-fit, minmax(175px, 1fr)
+      );
+      gap: 20px;
+    }
+
+    .movie {
+      overflow: hidden;
+      background: #1c1c23;
+      border: 1px solid #303039;
+      border-radius: 12px;
+      transition: transform 0.2s;
+    }
+
+    .movie:hover {
+      transform: translateY(-5px);
+    }
+
+    .poster {
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      object-fit: cover;
+      display: block;
+      background: #303039;
+    }
+
+    .movie-info {
+      padding: 14px;
+    }
+
+    .movie h2 {
+      font-size: 17px;
+      margin: 0 0 10px;
+    }
+
+    .details {
+      color: #bcbcc5;
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 11px;
+      border: none;
+      border-radius: 7px;
+      background: #e62429;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background: #bd171c;
+    }
+
+    .movie.watched {
+      border-color: #35bd83;
+    }
+
+    .movie.watched button {
+      background: #197c55;
+    }
+
+    .empty {
+      text-align: center;
+      color: #bbb;
+      padding: 40px 0;
+      grid-column: 1 / -1;
+    }
+
+    footer {
+      padding: 25px;
+      text-align: center;
+      color: #888;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>MARVEL MOVIE TRACKER</h1>
+    <p>اكتشف الأفلام ورتّب رحلة مشاهدتك لعالم مارفل</p>
+  </header>
+
+  <main class="container">
+    <div class="stats" id="stats"></div>
+
+    <div class="controls">
+      <input
+        id="search"
+        type="search"
+        placeholder="ابحث عن فيلم..."
+        aria-label="البحث عن فيلم"
+      >
+
+      <select id="phase" aria-label="تصفية حسب المرحلة">
+        <option value="all">كل المراحل</option>
+        <option value="1">المرحلة الأولى</option>
+        <option value="2">المرحلة الثانية</option>
+        <option value="3">المرحلة الثالثة</option>
+      </select>
+
+      <select id="status" aria-label="حالة المشاهدة">
+        <option value="all">كل الأفلام</option>
+        <option value="unwatched">لم أشاهدها</option>
+        <option value="watched">شاهدتها</option>
+      </select>
+    </div>
+
+    <section class="movies" id="movies"></section>
+  </main>
+
+  <footer>
+    مشروع تجريبي من صنعك لمحبي الأفلام 🎬
+  </footer>
+
+  <script>
+    const movieList = [
+      {
+        id: 1,
+        title: "Iron Man",
+        year: 2008,
+        phase: 1,
+        poster:
+          "https://image.tmdb.org/t/p/w500/78lPtwv72eTNqFW9COBYI0dWDJa.jpg"
+      },
+      {
+        id: 2,
+        title: "The Incredible Hulk",
+        year: 2008,
+        phase: 1,
+        poster:
+          "https://image.tmdb.org/t/p/w500/gKzYx79y0AQTL4UAk1cBQJ3nvrm.jpg"
+      },
+      {
+        id: 3,
+        title: "Iron Man 2",
+        year: 2010,
+        phase: 1,
+        poster:
+          "https://image.tmdb.org/t/p/w500/6WBeq4fCfn7AN0o21W9qNcRF2l9.jpg"
+      },
+      {
+        id: 4,
+        title: "Thor",
+        year: 2011,
+        phase: 1,
+        poster:
+          "https://image.tmdb.org/t/p/w500/prSfAi1xGrhLQNxVSUFh61xQ4Qy.jpg"
+      },
+      {
+        id: 5,
+        title: "The Avengers",
+        year: 2012,
+        phase: 1,
+        poster:
+          "https://image.tmdb.org/t/p/w500/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg"
+      },
+      {
+        id: 6,
+        title: "Guardians of the Galaxy",
+        year: 2014,
+        phase: 2,
+        poster:
+          "https://image.tmdb.org/t/p/w500/r7vmZjiyZw9rpJMQJdXpjgiCOk9.jpg"
+      },
+      {
+        id: 7,
+        title: "Avengers: Age of Ultron",
+        year: 2015,
+        phase: 2,
+        poster:
+          "https://image.tmdb.org/t/p/w500/4ssDuvEDkSArWEdyBl2X5EHvYKU.jpg"
+      },
+      {
+        id: 8,
+        title: "Captain America: Civil War",
+        year: 2016,
+        phase: 3,
+        poster:
+          "https://image.tmdb.org/t/p/w500/rAGiXaUfPzY7CDEyNKUofk3Kw2e.jpg"
+      },
+      {
+        id: 9,
+        title: "Black Panther",
+        year: 2018,
+        phase: 3,
+        poster:
+          "https://image.tmdb.org/t/p/w500/uxzzxijgPIY7slzFvMotPv8wjKA.jpg"
+      },
+      {
+        id: 10,
+        title: "Avengers: Endgame",
+        year: 2019,
+        phase: 3,
+        poster:
+          "https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg"
+      }
+    ];
+
+    let watched = new Set();
+
+    try {
+      watched = new Set(
+        JSON.parse(
+          localStorage.getItem("marvel-watched") || "[]"
+        )
+      );
+    } catch {
+      watched = new Set();
+    }
+
+    const movies = document.getElementById("movies");
+    const search = document.getElementById("search");
+    const phase = document.getElementById("phase");
+    const status = document.getElementById("status");
+    const stats = document.getElementById("stats");
+
+    function renderMovies() {
+      const query = search.value.trim().toLowerCase();
+
+      const filtered = movieList.filter(movie => {
+        const matchesSearch =
+          movie.title.toLowerCase().includes(query) ||
+          String(movie.year).includes(query);
+
+        const matchesPhase =
+          phase.value === "all" ||
+          String(movie.phase) === phase.value;
+
+        const matchesStatus =
+          status.value === "all" ||
+          (status.value === "watched" &&
+            watched.has(movie.id)) ||
+          (status.value === "unwatched" &&
+            !watched.has(movie.id));
+
+        return matchesSearch &&
+          matchesPhase &&
+          matchesStatus;
+      });
+
+      stats.textContent =
+        `شاهدت ${watched.size} من ${movieList.length} أفلام`;
+
+      movies.innerHTML = "";
+
+      if (filtered.length === 0) {
+        movies.innerHTML =
+          '<p class="empty">مفيش أفلام مطابقة للبحث.</p>';
+        return;
+      }
+
+      filtered.forEach(movie => {
+        const isWatched = watched.has(movie.id);
+        const card = document.createElement("article");
+
+        card.className =
+          "movie" + (isWatched ? " watched" : "");
+
+        const poster = document.createElement("img");
+        poster.className = "poster";
+        poster.src = movie.poster;
+        poster.alt = movie.title;
+        poster.loading = "lazy";
+
+        poster.onerror = () => {
+          poster.removeAttribute("src");
+          poster.alt = "الصورة غير متاحة";
+        };
+
+        const info = document.createElement("div");
+        info.className = "movie-info";
+
+        const title = document.createElement("h2");
+        title.textContent = movie.title;
+
+        const details = document.createElement("div");
+        details.className = "details";
+        details.textContent =
+          `${movie.year} · المرحلة ${movie.phase}`;
+
+        const button = document.createElement("button");
+        button.textContent = isWatched
+          ? "✓ شاهدت الفيلم"
+          : "تحديد كمُشاهَد";
+
+        button.addEventListener("click", () => {
+          if (watched.has(movie.id)) {
+            watched.delete(movie.id);
+          } else {
+            watched.add(movie.id);
+          }
+
+          localStorage.setItem(
+            "marvel-watched",
+            JSON.stringify([...watched])
+          );
+
+          renderMovies();
+        });
+
+        info.append(title, details, button);
+        card.append(poster, info);
+        movies.append(card);
+      });
+    }
+
+    search.addEventListener("input", renderMovies);
+    phase.addEventListener("change", renderMovies);
+    status.addEventListener("change", renderMovies);
+
+    renderMovies();
+  </script>
+</body>
+</html>
